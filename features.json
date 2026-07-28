@@ -1,0 +1,38 @@
+{
+  "raw_features": [
+    "Pregnancies",
+    "Glucose",
+    "BloodPressure",
+    "SkinThickness",
+    "Insulin",
+    "BMI",
+    "DiabetesPedigreeFunction",
+    "Age"
+  ],
+  "all_features": [
+    "Pregnancies",
+    "Glucose",
+    "BloodPressure",
+    "SkinThickness",
+    "Insulin",
+    "BMI",
+    "DiabetesPedigreeFunction",
+    "Age",
+    "Glucose_BMI",
+    "Age_Glucose",
+    "Insulin_Glucose",
+    "Glucose_Log",
+    "BMI_Log",
+    "Age_Log"
+  ],
+  "accuracy": 0.8701298701298701,
+  "roc_auc": 0.9159259259259258,
+  "random_10_accuracy": 1.0,
+  "means": {
+    "Glucose": 121.69735766573122,
+    "BloodPressure": 72.42814101017225,
+    "SkinThickness": 29.071261109187446,
+    "Insulin": 151.51441928297393,
+    "BMI": 32.38457109510985
+  }
+}

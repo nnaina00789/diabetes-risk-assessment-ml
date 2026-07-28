@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Diabetes Risk Assessment Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Live Animated Canvas Background -->
+    <canvas id="bg-canvas"></canvas>
+    
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-group">
+                <div class="pulse-icon">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div>
+                    <h1>AI Diabetes Risk Assessment Portal</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stepper Indicator -->
+        <nav class="stepper-nav">
+            <div class="step-item active" id="step-nav-1">
+                <span class="step-num">1</span>
+                <span class="step-title">Personal Details</span>
+            </div>
+            <div class="step-line" id="step-line-1"></div>
+            <div class="step-item" id="step-nav-2">
+                <span class="step-num">2</span>
+                <span class="step-title">Clinical Assessment</span>
+            </div>
+            <div class="step-line" id="step-line-2"></div>
+            <div class="step-item" id="step-nav-3">
+                <span class="step-num">3</span>
+                <span class="step-title">Precautions & Care Plan</span>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- ======================================================= -->
+            <!-- PAGE 1: PATIENT PERSONAL INFORMATION -->
+            <!-- ======================================================= -->
+            <section class="card page-section active" id="page-1">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-user-doctor"></i> Patient Personal Information</h2>
+                    <p>Enter patient demographics and baseline background before proceeding to health metrics.</p>
+                </div>
+
+                <form id="personal-info-form">
+                    <div class="input-grid">
+                        <!-- Full Name -->
+                        <div class="input-group">
+                            <label for="fullName">
+                                <span>Full Name</span>
+                                <span class="unit-badge">Required</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="fullName" placeholder="e.g. Eleanor Vance" required>
+                            </div>
+                        </div>
+
+                        <!-- Patient Age -->
+                        <div class="input-group">
+                            <label for="pAge">
+                                <span>Age</span>
+                                <span class="unit-badge">Required</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="pAge" min="18" max="120" value="33" required>
+                            </div>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="input-group">
+                            <label for="gender">
+                                <span>Gender</span>
+                                <span class="unit-badge">Required</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <select id="gender" required>
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Patient ID -->
+                        <div class="input-group">
+                            <label for="patientId">
+                                <span>Patient ID / Reference</span>
+                                <span class="unit-badge">Required</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="patientId" value="PAT-88241" required>
+                            </div>
+                        </div>
+
+                        <!-- Contact Phone Number with +91 Prefix -->
+                        <div class="input-group">
+                            <label for="contactPhone">
+                                <span>Contact Number</span>
+                                <span class="unit-badge">Required</span>
+                            </label>
+                            <div class="input-wrapper phone-wrapper">
+                                <span class="country-prefix">+91</span>
+                                <input type="tel" id="contactPhone" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" required>
+                            </div>
+                        </div>
+
+                        <!-- Separate Email Address Field -->
+                        <div class="input-group">
+                            <label for="emailAddress">
+                                <span>Email Address</span>
+                                <span class="unit-badge optional-badge">Optional</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="email" id="emailAddress" placeholder="patient@example.com">
+                            </div>
+                        </div>
+
+                        <!-- Primary Health Notes -->
+                        <div class="input-group full-width">
+                            <label for="medicalHistory">
+                                <span>Primary Health Notes</span>
+                                <span class="unit-badge optional-badge">Optional</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="text" id="medicalHistory" placeholder="e.g. Family history of Type 2 diabetes, mild hypertension">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary-btn">
+                            <span>PROCEED TO HEALTH METRICS</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- ======================================================= -->
+            <!-- PAGE 2: CLINICAL PARAMETERS & RISK ASSESSMENT -->
+            <!-- ======================================================= -->
+            <section class="card page-section" id="page-2">
+                <div class="patient-summary-banner">
+                    <div class="patient-info-chip">
+                        <i class="fa-solid fa-user"></i>
+                        <span id="banner-name">Patient Name</span>
+                    </div>
+                    <div class="patient-info-chip">
+                        <i class="fa-solid fa-calendar"></i>
+                        <span id="banner-age">33 yrs</span>
+                    </div>
+                    <div class="patient-info-chip">
+                        <i class="fa-solid fa-id-card"></i>
+                        <span id="banner-id">PAT-88241</span>
+                    </div>
+                    <button type="button" class="btn text-btn" id="edit-patient-btn">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit Details
+                    </button>
+                </div>
+
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-notes-medical"></i> Clinical Physiological Parameters</h2>
+                    <p>Fill diagnostic health metrics to evaluate diabetes risk probability.</p>
+                </div>
+
+                <form id="clinical-form" onsubmit="return false;">
+                    <div class="input-grid">
+                        <!-- Pregnancies (No unit badge above, no normal range below) -->
+                        <div class="input-group">
+                            <label for="pregnancies">
+                                <span>Pregnancies</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="pregnancies" min="0" max="20" value="1" step="1" required>
+                            </div>
+                        </div>
+
+                        <!-- Glucose (No unit badge above, normal range below retained) -->
+                        <div class="input-group">
+                            <label for="glucose">
+                                <span>Fasting Glucose</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="glucose" min="40" max="250" value="120" step="1" required>
+                                <span class="range-info">Normal: 70 – 99 mg/dL</span>
+                            </div>
+                        </div>
+
+                        <!-- Blood Pressure (No unit badge above, normal range below retained) -->
+                        <div class="input-group">
+                            <label for="bloodPressure">
+                                <span>Blood Pressure</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="bloodPressure" min="40" max="140" value="72" step="1" required>
+                                <span class="range-info">Normal Diastolic: 60 – 80 mmHg</span>
+                            </div>
+                        </div>
+
+                        <!-- Skin Thickness (No unit badge above, normal range below retained) -->
+                        <div class="input-group">
+                            <label for="skinThickness">
+                                <span>Skin Thickness</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="skinThickness" min="5" max="99" value="29" step="1" required>
+                                <span class="range-info">Triceps Fold: 10 – 50 mm</span>
+                            </div>
+                        </div>
+
+                        <!-- Insulin (No unit badge above, normal range below retained) -->
+                        <div class="input-group">
+                            <label for="insulin">
+                                <span>2-Hour Serum Insulin</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="insulin" min="15" max="846" value="155" step="1" required>
+                                <span class="range-info">Normal: 16 – 166 mu U/ml</span>
+                            </div>
+                        </div>
+
+                        <!-- BMI (No unit badge above, normal range below retained) -->
+                        <div class="input-group">
+                            <label for="bmi">
+                                <span>Body Mass Index (BMI)</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="bmi" min="10.0" max="67.5" value="32.5" step="0.1" required>
+                                <span class="range-info">Normal: 18.5 – 24.9 kg/m²</span>
+                            </div>
+                        </div>
+
+                        <!-- DPF (No unit badge above, normal range below retained) -->
+                        <div class="input-group">
+                            <label for="dpf">
+                                <span>Diabetes Pedigree Score</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="dpf" min="0.05" max="2.50" value="0.47" step="0.01" required>
+                                <span class="range-info">Genetic History: 0.08 – 2.42</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="fill-healthy-btn" class="btn secondary-btn">Healthy Preset</button>
+                        <button type="button" id="fill-diabetic-btn" class="btn secondary-btn">High Risk Preset</button>
+                        <button type="submit" id="process-btn" class="btn primary-btn">
+                            <span id="btn-text">PROCESS & ANALYZE DATA</span>
+                            <div id="btn-spinner" class="spinner hidden"></div>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Prediction Results Box -->
+                <div class="results-container hidden" id="results-container">
+                    <hr class="divider">
+                    <div class="results-header">
+                        <h3>Diagnostic Assessment Results</h3>
+                    </div>
+
+                    <div class="results-body">
+                        <div class="risk-gauge-wrapper">
+                            <div class="gauge-circle" id="gauge-circle">
+                                <svg class="gauge-svg" viewBox="0 0 120 120">
+                                    <circle class="gauge-bg" cx="60" cy="60" r="50"></circle>
+                                    <circle class="gauge-fill" id="gauge-fill" cx="60" cy="60" r="50"></circle>
+                                </svg>
+                                <div class="gauge-text">
+                                    <span class="gauge-value" id="gauge-percent">0%</span>
+                                    <span class="gauge-label">Risk Score</span>
+                                </div>
+                            </div>
+
+                            <div class="risk-badge-container">
+                                <span class="risk-tier-badge" id="risk-tier">Evaluating</span>
+                                <p class="risk-classification" id="risk-classification">Prediction label</p>
+                            </div>
+                        </div>
+
+                        <div class="analysis-details">
+                            <div class="details-box">
+                                <h4><i class="fa-solid fa-triangle-exclamation"></i> Primary Physiological Risk Factors</h4>
+                                <ul class="risk-list" id="risk-factors-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Button to Page 3 (Diabetic Care & Precautions) -->
+                    <div class="care-plan-trigger hidden" id="care-plan-trigger-box">
+                        <div class="alert-banner">
+                            <i class="fa-solid fa-heart-circle-exclamation"></i>
+                            <div>
+                                <h4>Elevated Diabetic Risk Detected</h4>
+                                <p>Specialized precautions, dietary guidelines, and lifestyle measures are available for patient care.</p>
+                            </div>
+                        </div>
+                        <button type="button" id="go-to-care-plan-btn" class="btn alert-btn">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>VIEW CARE PLAN & PRECAUTIONS</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================= -->
+            <!-- PAGE 3: DIABETIC CARE PLAN & PRECAUTIONS -->
+            <!-- ======================================================= -->
+            <section class="card page-section" id="page-3">
+                <div class="patient-summary-banner alert-border">
+                    <div class="patient-info-chip">
+                        <i class="fa-solid fa-user-nurse"></i>
+                        <span id="p3-patient-name">Patient Name</span>
+                    </div>
+                    <div class="patient-info-chip">
+                        <i class="fa-solid fa-circle-exclamation text-crimson"></i>
+                        <span id="p3-risk-score">High Risk Detected (0%)</span>
+                    </div>
+                </div>
+
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-shield-heart"></i> Comprehensive Diabetic Care Plan & Precautions</h2>
+                    <p>Clinical action steps, nutritional guidelines, exercise routines, and monitoring protocols.</p>
+                </div>
+
+                <div class="care-grid">
+                    <!-- Card 1: Immediate Clinical Steps -->
+                    <div class="care-card border-crimson">
+                        <div class="care-card-header">
+                            <i class="fa-solid fa-hospital-user icon-crimson"></i>
+                            <h3>1. Immediate Medical Actions</h3>
+                        </div>
+                        <ul>
+                            <li><strong>Schedule Endocrinologist Consult:</strong> Book a clinical evaluation with a qualified physician for comprehensive diagnostic confirmation.</li>
+                            <li><strong>Laboratory HbA1c Blood Test:</strong> Undergo Glycated Hemoglobin (HbA1c) testing to measure average blood sugar levels over the past 3 months.</li>
+                            <li><strong>Fasting Blood Glucose Re-test:</strong> Perform an 8-hour fasting plasma glucose test to verify initial screening indicators.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 2: Dietary Guidelines -->
+                    <div class="care-card border-amber">
+                        <div class="care-card-header">
+                            <i class="fa-solid fa-utensils icon-amber"></i>
+                            <h3>2. Dietary & Nutrition Plan</h3>
+                        </div>
+                        <ul>
+                            <li><strong>Low Glycemic Index Foods:</strong> Prioritize whole grains, oats, non-starchy vegetables, and legumes to avoid blood glucose spikes.</li>
+                            <li><strong>Carbohydrate Control:</strong> Limit refined sugars, sweetened beverages, white bread, and processed snack foods.</li>
+                            <li><strong>Fiber Intake:</strong> Consume at least 25–30g of soluble fiber daily to slow carbohydrate digestion and sugar absorption.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 3: Exercise & Physical Activity -->
+                    <div class="care-card border-blue">
+                        <div class="care-card-header">
+                            <i class="fa-solid fa-person-running icon-blue"></i>
+                            <h3>3. Physical Activity & Routine</h3>
+                        </div>
+                        <ul>
+                            <li><strong>150 Mins/Week Aerobic Activity:</strong> Engage in 30 minutes of moderate brisk walking or cycling 5 days a week.</li>
+                            <li><strong>Post-Meal Walking:</strong> Take a 10–15 minute walk after meals to increase insulin sensitivity and glucose clearance.</li>
+                            <li><strong>Resistance Training:</strong> Perform light strength training twice weekly to enhance muscle glucose uptake.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 4: Daily Monitoring Schedule -->
+                    <div class="care-card border-purple">
+                        <div class="care-card-header">
+                            <i class="fa-solid fa-clipboard-check icon-purple"></i>
+                            <h3>4. Daily Glucose Monitoring</h3>
+                        </div>
+                        <ul>
+                            <li><strong>Fasting Blood Glucose Target:</strong> Aim for fasting levels between 80 – 130 mg/dL.</li>
+                            <li><strong>Post-Prandial Target:</strong> Keep blood glucose under 180 mg/dL 2 hours after meals.</li>
+                            <li><strong>Maintain Logbook:</strong> Track daily blood sugar readings, meals, and physical activity for physician review.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 5: Emergency Warning Signs -->
+                    <div class="care-card border-red full-width">
+                        <div class="care-card-header">
+                            <i class="fa-solid fa-triangle-exclamation icon-crimson"></i>
+                            <h3>5. Emergency Warning Signs & Hypoglycemia Management</h3>
+                        </div>
+                        <div class="emergency-box">
+                            <div class="emergency-sub">
+                                <h4><i class="fa-solid fa-arrow-down"></i> Low Blood Sugar (Hypoglycemia < 70 mg/dL)</h4>
+                                <p><strong>Symptoms:</strong> Shakiness, sweating, dizziness, rapid heartbeat, confusion.</p>
+                                <p><strong>Action (15-15 Rule):</strong> Consume 15g fast-acting carbohydrates (e.g. 4 oz fruit juice or glucose tablet), wait 15 mins, and retest.</p>
+                            </div>
+                            <div class="emergency-sub">
+                                <h4><i class="fa-solid fa-arrow-up"></i> High Blood Sugar (Hyperglycemia > 250 mg/dL)</h4>
+                                <p><strong>Symptoms:</strong> Extreme thirst, frequent urination, fatigue, blurred vision, fruity breath odor.</p>
+                                <p><strong>Action:</strong> Drink water, avoid carbohydrates, and seek urgent medical guidance if ketones are present.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn secondary-btn" id="back-to-p2-btn">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Assessment
+                    </button>
+                    <button type="button" class="btn primary-btn" id="new-assessment-btn">
+                        <i class="fa-solid fa-rotate-left"></i> Start New Patient Assessment
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
