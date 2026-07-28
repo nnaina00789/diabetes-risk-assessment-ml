@@ -4,12 +4,9 @@ import json
 import os
 import joblib
 import numpy as np
-import urllib.parse
 import webbrowser
-import subprocess
 import threading
 import time
-import sys
 import csv
 import io
 
@@ -69,10 +66,9 @@ class MLHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         # 1. Single Patient Prediction Endpoint (/api/predict)
         if self.path == '/api/predict':
-            content_length = int(self.headers['Content-Length'])
-            post_data = self.rfile.read(content_length)
-            
             try:
+                content_length = int(self.headers.get('Content-Length', 0))
+                post_data = self.rfile.read(content_length)
                 data = json.loads(post_data.decode('utf-8'))
                 
                 pregnancies = float(data.get('pregnancies', 1))
@@ -113,7 +109,6 @@ class MLHandler(http.server.SimpleHTTPRequestHandler):
                 contributions = []
 
                 if coefs and len(all_feats) == scaled_features.shape[1]:
-                    # Calculate raw feature risk impact
                     raw_impacts = {
                         'Glucose': abs(scaled_features[0][1] * coefs.get('Glucose', 0) + scaled_features[0][8] * coefs.get('Glucose_BMI', 0) + scaled_features[0][11] * coefs.get('Glucose_Log', 0)),
                         'BMI': abs(scaled_features[0][5] * coefs.get('BMI', 0) + scaled_features[0][8] * coefs.get('Glucose_BMI', 0) + scaled_features[0][12] * coefs.get('BMI_Log', 0)),
@@ -160,23 +155,26 @@ class MLHandler(http.server.SimpleHTTPRequestHandler):
                     ]
                 }
 
+                response_bytes = json.dumps(response).encode('utf-8')
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/json')
+                self.send_header('Content-Length', str(len(response_bytes)))
                 self.end_headers()
-                self.wfile.write(json.dumps(response).encode('utf-8'))
+                self.wfile.write(response_bytes)
 
             except Exception as e:
+                err_bytes = json.dumps({"success": False, "error": str(e)}).encode('utf-8')
                 self.send_response(400)
                 self.send_header('Content-Type', 'application/json')
+                self.send_header('Content-Length', str(len(err_bytes)))
                 self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": str(e)}).encode('utf-8'))
+                self.wfile.write(err_bytes)
 
         # 2. Bulk CSV Prediction Endpoint (/api/predict_csv)
         elif self.path == '/api/predict_csv':
-            content_length = int(self.headers['Content-Length'])
-            post_data = self.rfile.read(content_length)
-            
             try:
+                content_length = int(self.headers.get('Content-Length', 0))
+                post_data = self.rfile.read(content_length)
                 csv_text = post_data.decode('utf-8')
                 reader = csv.DictReader(io.StringIO(csv_text))
                 
@@ -216,28 +214,31 @@ class MLHandler(http.server.SimpleHTTPRequestHandler):
                         "Risk_Tier": tier
                     })
 
-                # Write result CSV
                 output_buffer = io.StringIO()
                 writer = csv.DictWriter(output_buffer, fieldnames=["Patient_ID", "Glucose", "BMI", "Age", "Prediction_Label", "Risk_Probability_%", "Risk_Tier"])
                 writer.writeheader()
                 writer.writerows(output_rows)
 
-                csv_output = output_buffer.getvalue()
+                csv_output_bytes = output_buffer.getvalue().encode('utf-8')
 
                 self.send_response(200)
                 self.send_header('Content-Type', 'text/csv')
                 self.send_header('Content-Disposition', 'attachment; filename=diabetes_predictions_result.csv')
+                self.send_header('Content-Length', str(len(csv_output_bytes)))
                 self.end_headers()
-                self.wfile.write(csv_output.encode('utf-8'))
+                self.wfile.write(csv_output_bytes)
 
             except Exception as e:
+                err_bytes = json.dumps({"success": False, "error": str(e)}).encode('utf-8')
                 self.send_response(400)
                 self.send_header('Content-Type', 'application/json')
+                self.send_header('Content-Length', str(len(err_bytes)))
                 self.end_headers()
-                self.wfile.write(json.dumps({"success": False, "error": str(e)}).encode('utf-8'))
+                self.wfile.write(err_bytes)
 
         else:
-            super().do_GET()
+            self.send_response(404)
+            self.end_headers()
 
 class ReusableTCPServer(socketserver.TCPServer):
     allow_reuse_address = True
