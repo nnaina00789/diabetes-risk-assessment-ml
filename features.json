@@ -25,6 +25,23 @@
     "BMI_Log",
     "Age_Log"
   ],
+  "coefficients": {
+    "Pregnancies": 0.18124763963796792,
+    "Glucose": 0.7920692157458334,
+    "BloodPressure": -0.029259303483633967,
+    "SkinThickness": 0.43985709236208853,
+    "Insulin": -0.5901982050769115,
+    "BMI": -0.38522276073662887,
+    "DiabetesPedigreeFunction": 0.15772000294750238,
+    "Age": -1.1341120343596063,
+    "Glucose_BMI": -0.42745296405187805,
+    "Age_Glucose": -0.09643706899457616,
+    "Insulin_Glucose": 1.2528401454350107,
+    "Glucose_Log": 1.1547772360730577,
+    "BMI_Log": 1.0335827912429658,
+    "Age_Log": 1.4743787933760975
+  },
+  "intercept": -1.1177512991392846,
   "accuracy": 0.8701298701298701,
   "roc_auc": 0.9159259259259258,
   "random_10_accuracy": 1.0,

@@ -17,19 +17,17 @@ def train_and_save_model():
     print("\n" + "=" * 60)
     print("2. NOISE REMOVAL & DATA FILTRATION (MISSING VALUE IMPUTATION)")
     print("=" * 60)
-    # Medical features where 0 represents missing/invalid physiological data
     zero_cols = ['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI']
     
-    # Replace 0 with NaN and impute using column mean (or outcome group mean)
     for col in zero_cols:
         zero_count = (df[col] == 0).sum()
         print(f"Feature '{col}': {zero_count} invalid zero values found.")
         df[col] = df[col].replace(0, np.nan)
         col_mean = df[col].mean()
         df[col] = df[col].fillna(df.groupby('Outcome')[col].transform('mean'))
-        print(f"  -> Imputed NaN values in '{col}' using medical group average (overall mean: {col_mean:.2f})")
+        print(f"  -> Imputed NaN values in '{col}' using group average (overall mean: {col_mean:.2f})")
 
-    # Outlier capping using IQR (Interquartile Range) to filter extreme noise
+    # Outlier capping using IQR
     for col in ['SkinThickness', 'Insulin', 'BMI']:
         Q1 = df[col].quantile(0.25)
         Q3 = df[col].quantile(0.75)
@@ -56,7 +54,6 @@ def train_and_save_model():
     print("\n" + "=" * 60)
     print("4. TRAIN-TEST SPLIT (80:20 STRATIFIED)")
     print("=" * 60)
-    # Stratified 80:20 split
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.20, random_state=22, stratify=y
     )
@@ -103,8 +100,6 @@ def train_and_save_model():
     roc_auc = roc_auc_score(y_test, y_probs)
     print(f"Overall Test Accuracy: {acc * 100:.2f}%")
     print(f"ROC-AUC Score:          {roc_auc:.4f}")
-    print("\nClassification Report:")
-    print(classification_report(y_test, y_pred, target_names=['Non-Diabetic', 'Diabetic']))
 
     print("\n" + "=" * 60)
     print("8. ACCURACY CHECK ON RANDOM 10 SAMPLE BATCH")
@@ -114,29 +109,24 @@ def train_and_save_model():
     sample_X = X_test_scaled[sample_indices]
     sample_y_true = y_test.iloc[sample_indices].values
     sample_y_pred = best_model.predict(sample_X)
-    sample_y_prob = best_model.predict_proba(sample_X)[:, 1]
-
     sample_acc = accuracy_score(sample_y_true, sample_y_pred)
     print(f"Random 10 Samples Accuracy: {sample_acc * 100:.1f}%")
-    print("\nSample-by-Sample Breakdown:")
-    print(f"{'Sample #':<10}{'True Class':<15}{'Predicted Class':<18}{'Confidence':<15}{'Status':<10}")
-    print("-" * 68)
-    for i in range(10):
-        t_label = "Diabetic" if sample_y_true[i] == 1 else "Non-Diabetic"
-        p_label = "Diabetic" if sample_y_pred[i] == 1 else "Non-Diabetic"
-        conf = sample_y_prob[i] if sample_y_pred[i] == 1 else 1 - sample_y_prob[i]
-        status = "CORRECT" if sample_y_true[i] == sample_y_pred[i] else "INCORRECT"
-        print(f"Sample {i+1:<3}{t_label:<15}{p_label:<18}{conf * 100:.1f}%{' '*6}{status:<10}")
 
     print("\n" + "=" * 60)
-    print("9. SAVING MODEL & SCALER ARTIFACTS")
+    print("9. SAVING MODEL, SCALER, AND COEFFICIENTS")
     print("=" * 60)
     joblib.dump(best_model, 'model.pkl')
     joblib.dump(scaler, 'scaler.pkl')
 
+    feature_names = list(X.columns)
+    coefficients = best_model.coef_[0].tolist()
+    intercept = float(best_model.intercept_[0])
+
     metadata = {
         'raw_features': list(X.columns[:8]),
-        'all_features': list(X.columns),
+        'all_features': feature_names,
+        'coefficients': dict(zip(feature_names, coefficients)),
+        'intercept': intercept,
         'accuracy': float(acc),
         'roc_auc': float(roc_auc),
         'random_10_accuracy': float(sample_acc),

@@ -25,6 +25,11 @@
                     <h1>AI Diabetes Risk Assessment Portal</h1>
                 </div>
             </div>
+            <div class="header-actions">
+                <button type="button" class="btn secondary-btn" id="open-csv-modal-btn">
+                    <i class="fa-solid fa-file-csv"></i> Bulk CSV Prediction
+                </button>
+            </div>
         </header>
 
         <!-- Stepper Indicator -->
@@ -58,7 +63,6 @@
 
                 <form id="personal-info-form">
                     <div class="input-grid">
-                        <!-- Full Name -->
                         <div class="input-group">
                             <label for="fullName">
                                 <span>Full Name</span>
@@ -69,7 +73,6 @@
                             </div>
                         </div>
 
-                        <!-- Patient Age -->
                         <div class="input-group">
                             <label for="pAge">
                                 <span>Age</span>
@@ -80,7 +83,6 @@
                             </div>
                         </div>
 
-                        <!-- Gender -->
                         <div class="input-group">
                             <label for="gender">
                                 <span>Gender</span>
@@ -95,7 +97,6 @@
                             </div>
                         </div>
 
-                        <!-- Patient ID -->
                         <div class="input-group">
                             <label for="patientId">
                                 <span>Patient ID / Reference</span>
@@ -106,7 +107,6 @@
                             </div>
                         </div>
 
-                        <!-- Contact Phone Number with +91 Prefix -->
                         <div class="input-group">
                             <label for="contactPhone">
                                 <span>Contact Number</span>
@@ -118,7 +118,6 @@
                             </div>
                         </div>
 
-                        <!-- Separate Email Address Field -->
                         <div class="input-group">
                             <label for="emailAddress">
                                 <span>Email Address</span>
@@ -129,7 +128,6 @@
                             </div>
                         </div>
 
-                        <!-- Primary Health Notes -->
                         <div class="input-group full-width">
                             <label for="medicalHistory">
                                 <span>Primary Health Notes</span>
@@ -179,76 +177,55 @@
 
                 <form id="clinical-form" onsubmit="return false;">
                     <div class="input-grid">
-                        <!-- Pregnancies (No unit badge above, no normal range below) -->
                         <div class="input-group">
-                            <label for="pregnancies">
-                                <span>Pregnancies</span>
-                            </label>
+                            <label for="pregnancies"><span>Pregnancies</span></label>
                             <div class="input-wrapper">
                                 <input type="number" id="pregnancies" min="0" max="20" value="1" step="1" required>
                             </div>
                         </div>
 
-                        <!-- Glucose (No unit badge above, normal range below retained) -->
                         <div class="input-group">
-                            <label for="glucose">
-                                <span>Fasting Glucose</span>
-                            </label>
+                            <label for="glucose"><span>Fasting Glucose</span></label>
                             <div class="input-wrapper">
                                 <input type="number" id="glucose" min="40" max="250" value="120" step="1" required>
                                 <span class="range-info">Normal: 70 – 99 mg/dL</span>
                             </div>
                         </div>
 
-                        <!-- Blood Pressure (No unit badge above, normal range below retained) -->
                         <div class="input-group">
-                            <label for="bloodPressure">
-                                <span>Blood Pressure</span>
-                            </label>
+                            <label for="bloodPressure"><span>Blood Pressure</span></label>
                             <div class="input-wrapper">
                                 <input type="number" id="bloodPressure" min="40" max="140" value="72" step="1" required>
                                 <span class="range-info">Normal Diastolic: 60 – 80 mmHg</span>
                             </div>
                         </div>
 
-                        <!-- Skin Thickness (No unit badge above, normal range below retained) -->
                         <div class="input-group">
-                            <label for="skinThickness">
-                                <span>Skin Thickness</span>
-                            </label>
+                            <label for="skinThickness"><span>Skin Thickness</span></label>
                             <div class="input-wrapper">
                                 <input type="number" id="skinThickness" min="5" max="99" value="29" step="1" required>
                                 <span class="range-info">Triceps Fold: 10 – 50 mm</span>
                             </div>
                         </div>
 
-                        <!-- Insulin (No unit badge above, normal range below retained) -->
                         <div class="input-group">
-                            <label for="insulin">
-                                <span>2-Hour Serum Insulin</span>
-                            </label>
+                            <label for="insulin"><span>2-Hour Serum Insulin</span></label>
                             <div class="input-wrapper">
                                 <input type="number" id="insulin" min="15" max="846" value="155" step="1" required>
                                 <span class="range-info">Normal: 16 – 166 mu U/ml</span>
                             </div>
                         </div>
 
-                        <!-- BMI (No unit badge above, normal range below retained) -->
                         <div class="input-group">
-                            <label for="bmi">
-                                <span>Body Mass Index (BMI)</span>
-                            </label>
+                            <label for="bmi"><span>Body Mass Index (BMI)</span></label>
                             <div class="input-wrapper">
                                 <input type="number" id="bmi" min="10.0" max="67.5" value="32.5" step="0.1" required>
                                 <span class="range-info">Normal: 18.5 – 24.9 kg/m²</span>
                             </div>
                         </div>
 
-                        <!-- DPF (No unit badge above, normal range below retained) -->
                         <div class="input-group">
-                            <label for="dpf">
-                                <span>Diabetes Pedigree Score</span>
-                            </label>
+                            <label for="dpf"><span>Diabetes Pedigree Score</span></label>
                             <div class="input-wrapper">
                                 <input type="number" id="dpf" min="0.05" max="2.50" value="0.47" step="0.01" required>
                                 <span class="range-info">Genetic History: 0.08 – 2.42</span>
@@ -271,6 +248,9 @@
                     <hr class="divider">
                     <div class="results-header">
                         <h3>Diagnostic Assessment Results</h3>
+                        <button type="button" class="btn secondary-btn pdf-btn" id="print-p2-pdf-btn">
+                            <i class="fa-solid fa-file-pdf"></i> Download PDF Report
+                        </button>
                     </div>
 
                     <div class="results-body">
@@ -296,6 +276,54 @@
                             <div class="details-box">
                                 <h4><i class="fa-solid fa-triangle-exclamation"></i> Primary Physiological Risk Factors</h4>
                                 <ul class="risk-list" id="risk-factors-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FEATURE 2: FEATURE IMPORTANCE & EXPLAINABILITY BREAKDOWN -->
+                    <div class="explainability-box">
+                        <h4><i class="fa-solid fa-chart-bar"></i> ML Model Explainability & Risk Feature Drivers</h4>
+                        <p class="explain-sub">Individual parameter contributions to the calculated diabetes risk score based on Logistic Regression coefficients:</p>
+                        <div class="contrib-grid" id="contrib-grid"></div>
+                    </div>
+
+                    <!-- FEATURE 3: INTERACTIVE WHAT-IF LIFESTYLE SIMULATOR -->
+                    <div class="whatif-box">
+                        <div class="whatif-header">
+                            <div>
+                                <h4><i class="fa-solid fa-sliders"></i> Interactive "What-If" Lifestyle Simulator</h4>
+                                <p>Simulate how modifying health parameters reduces predicted diabetes risk in real-time:</p>
+                            </div>
+                            <div class="sim-badge-group">
+                                <span class="sim-label">Simulated Risk:</span>
+                                <span class="sim-value" id="sim-risk-val">0.0%</span>
+                                <span class="sim-diff-badge" id="sim-diff-badge">-0.0%</span>
+                            </div>
+                        </div>
+
+                        <div class="whatif-sliders-grid">
+                            <div class="slider-group">
+                                <label for="sim-glucose">
+                                    <span>Fasting Glucose</span>
+                                    <strong id="sim-glucose-val">120 mg/dL</strong>
+                                </label>
+                                <input type="range" id="sim-glucose" min="60" max="220" value="120" step="1">
+                            </div>
+
+                            <div class="slider-group">
+                                <label for="sim-bmi">
+                                    <span>Body Mass Index (BMI)</span>
+                                    <strong id="sim-bmi-val">32.5 kg/m²</strong>
+                                </label>
+                                <input type="range" id="sim-bmi" min="15.0" max="50.0" value="32.5" step="0.1">
+                            </div>
+
+                            <div class="slider-group">
+                                <label for="sim-bp">
+                                    <span>Blood Pressure</span>
+                                    <strong id="sim-bp-val">72 mmHg</strong>
+                                </label>
+                                <input type="range" id="sim-bp" min="50" max="130" value="72" step="1">
                             </div>
                         </div>
                     </div>
@@ -331,6 +359,9 @@
                         <i class="fa-solid fa-circle-exclamation text-crimson"></i>
                         <span id="p3-risk-score">High Risk Detected (0%)</span>
                     </div>
+                    <button type="button" class="btn secondary-btn pdf-btn text-btn-override" id="print-p3-pdf-btn">
+                        <i class="fa-solid fa-file-pdf"></i> Download PDF Clinical Report
+                    </button>
                 </div>
 
                 <div class="card-header">
@@ -339,7 +370,6 @@
                 </div>
 
                 <div class="care-grid">
-                    <!-- Card 1: Immediate Clinical Steps -->
                     <div class="care-card border-crimson">
                         <div class="care-card-header">
                             <i class="fa-solid fa-hospital-user icon-crimson"></i>
@@ -352,7 +382,6 @@
                         </ul>
                     </div>
 
-                    <!-- Card 2: Dietary Guidelines -->
                     <div class="care-card border-amber">
                         <div class="care-card-header">
                             <i class="fa-solid fa-utensils icon-amber"></i>
@@ -365,7 +394,6 @@
                         </ul>
                     </div>
 
-                    <!-- Card 3: Exercise & Physical Activity -->
                     <div class="care-card border-blue">
                         <div class="care-card-header">
                             <i class="fa-solid fa-person-running icon-blue"></i>
@@ -378,7 +406,6 @@
                         </ul>
                     </div>
 
-                    <!-- Card 4: Daily Monitoring Schedule -->
                     <div class="care-card border-purple">
                         <div class="care-card-header">
                             <i class="fa-solid fa-clipboard-check icon-purple"></i>
@@ -391,7 +418,6 @@
                         </ul>
                     </div>
 
-                    <!-- Card 5: Emergency Warning Signs -->
                     <div class="care-card border-red full-width">
                         <div class="care-card-header">
                             <i class="fa-solid fa-triangle-exclamation icon-crimson"></i>
@@ -422,6 +448,55 @@
                 </div>
             </section>
         </main>
+
+        <!-- FEATURE 5: BULK CSV UPLOAD MODAL -->
+        <div class="modal-overlay hidden" id="csv-modal">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3><i class="fa-solid fa-file-csv"></i> Bulk CSV Prediction Mode</h3>
+                    <button type="button" class="close-btn" id="close-csv-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Upload a batch `.csv` file containing patient physiological records for instant ML risk evaluation.</p>
+                    
+                    <div class="dropzone" id="csv-dropzone">
+                        <i class="fa-solid fa-cloud-arrow-up dropzone-icon"></i>
+                        <p>Drag and drop your <strong>.csv</strong> file here, or <span class="browse-link">browse</span></p>
+                        <input type="file" id="csv-file-input" accept=".csv" class="hidden">
+                    </div>
+
+                    <div class="sample-csv-info">
+                        <span>Expected Header Columns:</span>
+                        <code>Patient_ID, Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DPF, Age</code>
+                    </div>
+
+                    <div class="csv-preview-container hidden" id="csv-preview-box">
+                        <h4>Preview Processed Results:</h4>
+                        <div class="table-responsive">
+                            <table class="preview-table" id="csv-results-table">
+                                <thead>
+                                    <tr>
+                                        <th>Patient ID</th>
+                                        <th>Glucose</th>
+                                        <th>BMI</th>
+                                        <th>Age</th>
+                                        <th>Prediction</th>
+                                        <th>Probability</th>
+                                        <th>Risk Tier</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn secondary-btn" id="download-csv-btn" disabled>
+                        <i class="fa-solid fa-download"></i> Download Predictions CSV
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>
